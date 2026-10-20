@@ -6,5 +6,5 @@ CREATE TABLE dbo.SalesOrder
  ShipDate DATE NULL,
  TotalAmount DECIMAL(12,2) NOT NULL,
  CONSTRAINT PK_SalesOrder PRIMARY KEY (SalesOrderID),
- CONSTRAINT CK_SalesOrder_TotalAmount CHECK (TotalAmount >= 0)
+ CONSTRAINT CK_SalesOrder_TotalAmount CHECK (TotalAmount >= 0 AND TotalAmount <= 1000000)
 );
