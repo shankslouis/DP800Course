@@ -12,3 +12,7 @@ CREATE TABLE dbo.SalesOrder
  CONSTRAINT FK_SalesOrder_OrderStatus FOREIGN KEY (StatusID)
     REFERENCES dbo.OrderStatus (StatusID)
 );
+GO
+
+CREATE NONCLUSTERED INDEX IX_SalesOrder_OrderDate
+    ON dbo.SalesOrder (OrderDate);
