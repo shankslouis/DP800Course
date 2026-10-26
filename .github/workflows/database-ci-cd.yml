@@ -1,0 +1,46 @@
+name: Database CI/CD
+
+on:
+     push:
+        branches: [ main ] 
+     pull_request: 
+        branches: [ main ]
+        
+permissions:
+     contents: read 
+     
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-dotnet@v6
+              with:
+                dotnet-version: '8.0.x'
+    
+            - name: Build SQL project
+              run: dotnet build --configuration Release
+            
+            - name: Upload dacpac artifact
+              uses: actions/upload-artifact@v7
+              with:
+                name: dacpac
+                path: bin/Release/DP800Course.dacpac
+    
+deploy-production:
+        needs: build
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        environment: production
+        steps:
+            - name: Download the exact dacpac we built
+              uses: actions/download-artifact@v8
+              with:
+                name: dacpac
+            
+            - name: Publish dacpac to production
+              uses: azure/sql-action@v2
+              with:
+                connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+                path: './DP800Course.dacpac'
+                action: 'publish'

@@ -1,0 +1,3 @@
+# Database code must be reviewed by its owners 
+*.sql     @shankslouis
+*.sqlproj @shankslouis
