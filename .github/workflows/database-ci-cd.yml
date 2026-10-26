@@ -26,8 +26,8 @@ jobs:
               with:
                 name: dacpac
                 path: bin/Release/DP800Course.dacpac
-    
-deploy-production:
+
+    deploy-production:
         needs: build
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
